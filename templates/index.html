@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ profile.name }} — {{ profile.title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<header class="navbar">
+  <a href="#home" class="brand">{{ profile.name.split(' ')[0] }}<span class="dot">.</span></a>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#demos">Demos</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO / CREDENTIALS -->
+  <section id="home" class="hero">
+    <div class="hero-inner">
+    <div class="hero-content">
+      <p class="eyebrow">✦ Welcome to my portfolio ✦</p>
+      <h1>Hi, I'm <span class="gradient-text">{{ profile.name }}</span></h1>
+      <h2 class="title">{{ profile.title }}</h2>
+      <p class="intro">{{ profile.intro }}</p>
+
+      <div class="credentials-row" id="about">
+        <div class="credential-card">
+          <span class="credential-label">University</span>
+          <span class="credential-value">{{ profile.university }}</span>
+        </div>
+        <div class="credential-card">
+          <span class="credential-label">Major</span>
+          <span class="credential-value">{{ profile.major }}</span>
+        </div>
+        <div class="credential-card">
+          <span class="credential-label">Graduation</span>
+          <span class="credential-value">{{ profile.grad_year }}</span>
+        </div>
+      </div>
+
+      {% if profile.quote %}
+      <blockquote class="quote-card">
+        <span class="quote-mark">“</span>
+        <p>{{ profile.quote }}</p>
+        {% if profile.quote_author %}<cite>— {{ profile.quote_author }}</cite>{% endif %}
+      </blockquote>
+      {% else %}
+      <blockquote class="quote-card quote-placeholder">
+        <span class="quote-mark">“</span>
+        <p>Your favorite quote will go here.</p>
+      </blockquote>
+      {% endif %}
+    </div>
+
+    <div class="hero-photo">
+      <div class="photo-frame">
+        {% if profile.photo %}
+        <img src="{{ profile.photo }}" alt="Photo of {{ profile.name }}">
+        {% else %}
+        <div class="photo-placeholder">
+          <span>{{ profile.name.split(' ')|map('first')|join('') | upper }}</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="projects">
+    <p class="section-label">✦ My Work</p>
+    <h2 class="section-title">Projects</h2>
+
+    <div class="projects-grid">
+      {% for project in projects %}
+      <article class="project-card">
+        <div class="project-card-top">
+          <h3>{{ project.name }}</h3>
+          {% if project.link %}
+          <a href="{{ project.link }}" target="_blank" rel="noopener" class="project-link" aria-label="View {{ project.name }}">↗</a>
+          {% endif %}
+        </div>
+        <p class="project-description">{{ project.description }}</p>
+        <p class="project-role"><span>My Role</span>{{ project.role }}</p>
+        {% if project.tags %}
+        <div class="tag-row">
+          {% for tag in project.tags %}
+          <span class="tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- VIDEO DEMOS -->
+  <section id="demos" class="demos">
+    <p class="section-label">✦ See It In Action</p>
+    <h2 class="section-title">Video Demos</h2>
+    <div class="scroll-hint">scroll to explore →</div>
+
+    <div class="video-scroller">
+      {% for project in projects %}
+        {% set kind = video_kind(project.video) %}
+        {% if kind != "none" %}
+        <div class="video-card">
+          <div class="video-frame">
+            {% if kind == "local" %}
+            <video controls preload="metadata" src="{{ project.video }}"></video>
+            {% elif kind == "youtube" %}
+            <iframe src="{{ youtube_embed_url(project.video) }}" title="{{ project.name }} demo" allowfullscreen></iframe>
+            {% elif kind == "vimeo" %}
+            <iframe src="{{ vimeo_embed_url(project.video) }}" title="{{ project.name }} demo" allowfullscreen></iframe>
+            {% endif %}
+          </div>
+          <p class="video-caption">{{ project.name }}</p>
+        </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if projects|selectattr("video")|list|length == 0 %}
+      <div class="video-card video-placeholder">
+        <div class="video-frame empty">
+          <span>🎬 Add your demo videos in <code>data.py</code></span>
+        </div>
+        <p class="video-caption">Coming soon</p>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <p class="section-label">✦ Let's Connect</p>
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="contact-text">Always open to chatting about backend systems, AI infrastructure, or new opportunities.</p>
+    <div class="contact-links">
+      <a href="mailto:{{ profile.email }}" class="btn-primary">Email Me</a>
+      {% if profile.socials.github %}<a href="{{ profile.socials.github }}" target="_blank" rel="noopener" class="btn-secondary">GitHub</a>{% endif %}
+      {% if profile.socials.linkedin %}<a href="{{ profile.socials.linkedin }}" target="_blank" rel="noopener" class="btn-secondary">LinkedIn</a>{% endif %}
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; <span id="year"></span> {{ profile.name }}. Built with care (and a little pink).</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
