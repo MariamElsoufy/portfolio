@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 
-from data import PROFILE, PROJECTS, EXPERIENCE
+from data import PROFILE, PROJECTS, EXPERIENCE, SKILLS
 
 app = Flask(__name__)
 
@@ -42,7 +42,11 @@ def inject_helpers():
 @app.route("/")
 def index():
     return render_template(
-        "index.html", profile=PROFILE, projects=PROJECTS, experience=EXPERIENCE
+        "index.html",
+        profile=PROFILE,
+        projects=PROJECTS,
+        experience=EXPERIENCE,
+        skills=SKILLS,
     )
 
 

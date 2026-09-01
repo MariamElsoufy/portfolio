@@ -5,15 +5,12 @@ Update these values with your own info — no HTML editing required.
 
 PROFILE = {
     "name": "Mariam Elsoufy",
-    "title": "Software Engineer / AI Backend Developer",
+    "title": "AI Backend Engineer / Software Developer",
     "grad_year": "2026",
     "university": "Cairo University - STEP",
     "major": "Communication and Computer Engineering - Computer Track",
     "intro": (
-        "I'm a software engineer focused on AI-powered backend systems — "
-        "designing APIs, data pipelines, and infrastructure that let machine "
-        "learning models actually ship. I like clean architecture, well-tested "
-        "code, and turning research into production-ready systems."
+       "I turn AI capabilities into reliable backend applications — from API development and data pipelines to LLM, speech, and real-time integrations. I build clean, scalable systems using Python, FastAPI, and modern AI technologies."
     ),
     # Add your quote later, e.g. "Code is poetry that compiles."
     "quote": "Powered by Coding and Iced Coffee ",
@@ -26,6 +23,80 @@ PROFILE = {
         "linkedin": "https://www.linkedin.com/in/mariamelsoufy/",
     },
 }
+
+# Each entry is a skill group: a "category" label and a list of "tags"
+# shown as pills.
+SKILLS = [
+    {
+        "category": "Programming Languages",
+        "tags": [
+            "Python",
+            "C#",
+            "Dart",
+            "C\C++",
+            "SQL",
+        ],
+    },
+    {
+        "category": "Backend Development",
+        "tags": [
+            "FastAPI",
+            "Flask",
+            "REST APIs",
+            "WebSockets",
+            "Async Programming",
+            "API Integration",
+            "Backend Architecture",
+            "JSON",
+        ],
+    },
+    {
+        "category": "AI & Voice Technologies",
+        "tags": [
+            "LLM Integration",
+            "OpenAI API",
+            "ElevenLabs API",
+            "Speech-to-Text",
+            "Text-to-Speech",
+            "AI Voice Applications",
+            "Real-Time AI",
+            "Prompt Engineering",
+            "AI API Integration",
+        ],
+    },
+    {
+        "category": "Databases",
+        "tags": [
+            "Microsoft SQL Server",
+            "Relational Databases",
+            "SQL",
+            "NOSQL",
+            "PostgreSQL",
+            "Temenos T24",
+        ],
+    },
+    {
+        "category": "Mobile Development",
+        "tags": [
+            "Flutter",
+            "Dart",
+            "Android Development",
+            "Cross-Platform Development",
+        ],
+    },
+    {
+        "category": "Tools & Technologies",
+        "tags": [
+            "Git",
+            "GitHub",
+            "Docker",
+            "Stripe",
+            "Cisco",
+            "YARA",
+            "API Integration",
+        ],
+    },
+]
 
 # Each entry is a past role: "role", "company", "duration" (shown as a
 # badge), a "description", and optional "tags".
