@@ -156,7 +156,7 @@ PROJECTS = [
             "role": "Flutter Developer",
             "tags": ["Flutter", "Dart", "Android Development", "Stripe", "Mobile Development"],
             "video": "/static/videos/tawasol.mp4",
-            "github": "",
+            "github": "https://github.com/TawasolApp/Cross-Platform",
             "logo": "",
         },
         {
