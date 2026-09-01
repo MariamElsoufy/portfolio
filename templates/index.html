@@ -17,8 +17,8 @@
   <a href="#home" class="brand">{{ profile.name.split(' ')[0] }}<span class="dot">.</span></a>
   <nav>
     <a href="#about">About</a>
+    <a href="#experience">Experience</a>
     <a href="#projects">Projects</a>
-    <a href="#demos">Demos</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
@@ -33,6 +33,12 @@
       <h1>Hi, I'm <span class="gradient-text">{{ profile.name }}</span></h1>
       <h2 class="title">{{ profile.title }}</h2>
       <p class="intro">{{ profile.intro }}</p>
+
+      {% if profile.resume %}
+      <div class="resume-actions">
+        <a href="{{ profile.resume }}" target="_blank" rel="noopener" class="btn-primary">View Resume</a>
+      </div>
+      {% endif %}
 
       <div class="credentials-row" id="about">
         <div class="credential-card">
@@ -52,7 +58,7 @@
       {% if profile.quote %}
       <blockquote class="quote-card">
         <span class="quote-mark">“</span>
-        <p>{{ profile.quote }}</p>
+        <p>{{ profile.quote.strip() }}</p>
         {% if profile.quote_author %}<cite>— {{ profile.quote_author }}</cite>{% endif %}
       </blockquote>
       {% else %}
@@ -77,25 +83,25 @@
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section id="projects" class="projects">
-    <p class="section-label">✦ My Work</p>
-    <h2 class="section-title">Projects</h2>
+  <!-- EXPERIENCE -->
+  <section id="experience" class="experience">
+    <p class="section-label">✦ My Journey</p>
+    <h2 class="section-title">Experience</h2>
 
-    <div class="projects-grid">
-      {% for project in projects %}
-      <article class="project-card">
-        <div class="project-card-top">
-          <h3>{{ project.name }}</h3>
-          {% if project.link %}
-          <a href="{{ project.link }}" target="_blank" rel="noopener" class="project-link" aria-label="View {{ project.name }}">↗</a>
-          {% endif %}
+    <div class="experience-list">
+      {% for exp in experience %}
+      <article class="experience-card">
+        <div class="experience-header">
+          <div>
+            <h3>{{ exp.role }}</h3>
+            <p class="experience-company">{{ exp.company }}</p>
+          </div>
+          <span class="experience-duration">{{ exp.duration }}</span>
         </div>
-        <p class="project-description">{{ project.description }}</p>
-        <p class="project-role"><span>My Role</span>{{ project.role }}</p>
-        {% if project.tags %}
+        <p class="experience-description">{{ exp.description }}</p>
+        {% if exp.tags %}
         <div class="tag-row">
-          {% for tag in project.tags %}
+          {% for tag in exp.tags %}
           <span class="tag">{{ tag }}</span>
           {% endfor %}
         </div>
@@ -105,40 +111,75 @@
     </div>
   </section>
 
-  <!-- VIDEO DEMOS -->
-  <section id="demos" class="demos">
-    <p class="section-label">✦ See It In Action</p>
-    <h2 class="section-title">Video Demos</h2>
-    <div class="scroll-hint">scroll to explore →</div>
+  <!-- PROJECTS -->
+  <section id="projects" class="projects">
+    <p class="section-label">✦ My Work</p>
+    <h2 class="section-title">Projects</h2>
 
-    <div class="video-scroller">
+    <div class="projects-list">
       {% for project in projects %}
-        {% set kind = video_kind(project.video) %}
-        {% if kind != "none" %}
-        <div class="video-card">
-          <div class="video-frame">
-            {% if kind == "local" %}
-            <video controls preload="metadata" src="{{ project.video }}"></video>
-            {% elif kind == "youtube" %}
-            <iframe src="{{ youtube_embed_url(project.video) }}" title="{{ project.name }} demo" allowfullscreen></iframe>
-            {% elif kind == "vimeo" %}
-            <iframe src="{{ vimeo_embed_url(project.video) }}" title="{{ project.name }} demo" allowfullscreen></iframe>
-            {% endif %}
+      {% set kind = video_kind(project.video) %}
+      <article class="project-card">
+        <div class="project-info">
+          <div class="project-header">
+            <div class="project-logo">
+              {% if project.logo %}
+              <img src="{{ project.logo }}" alt="{{ project.name }} logo">
+              {% else %}
+              <span>{{ project.name[:1] | upper }}</span>
+              {% endif %}
+            </div>
+            <h3>{{ project.name }}</h3>
           </div>
-          <p class="video-caption">{{ project.name }}</p>
+          <p class="project-description">{{ project.description }}</p>
+          <p class="project-role"><span>My Role</span>{{ project.role }}</p>
+          {% if project.tags %}
+          <div class="tag-row">
+            {% for tag in project.tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if project.github %}
+          <a href="{{ project.github }}" target="_blank" rel="noopener" class="github-link">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+                -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+                .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+                -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0
+                1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82
+                1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
+                1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+            </svg>
+            View on GitHub
+          </a>
+          {% endif %}
+        </div>
+
+        {% if kind != "none" %}
+        <div class="project-media">
+          {% if kind == "local" %}
+          <video controls preload="metadata" src="{{ project.video }}"></video>
+          {% elif kind == "youtube" %}
+          <iframe src="{{ youtube_embed_url(project.video) }}" title="{{ project.name }} demo" allowfullscreen></iframe>
+          {% elif kind == "vimeo" %}
+          <iframe src="{{ vimeo_embed_url(project.video) }}" title="{{ project.name }} demo" allowfullscreen></iframe>
+          {% endif %}
         </div>
         {% endif %}
+      </article>
       {% endfor %}
-
-      {% if projects|selectattr("video")|list|length == 0 %}
-      <div class="video-card video-placeholder">
-        <div class="video-frame empty">
-          <span>🎬 Add your demo videos in <code>data.py</code></span>
-        </div>
-        <p class="video-caption">Coming soon</p>
-      </div>
-      {% endif %}
     </div>
+
+    {% if profile.socials.github %}
+    <div class="more-projects">
+      <p>Want to see more of my work?</p>
+      <a href="{{ profile.socials.github }}" target="_blank" rel="noopener" class="btn-secondary">
+        Check out more projects on GitHub ↗
+      </a>
+    </div>
+    {% endif %}
   </section>
 
   <!-- CONTACT -->
@@ -146,10 +187,10 @@
     <p class="section-label">✦ Let's Connect</p>
     <h2 class="section-title">Get In Touch</h2>
     <p class="contact-text">Always open to chatting about backend systems, AI infrastructure, or new opportunities.</p>
+    <p class="contact-email" id="email-copy" data-email="{{ profile.email }}" title="Click to copy">{{ profile.email }}</p>
     <div class="contact-links">
-      <a href="mailto:{{ profile.email }}" class="btn-primary">Email Me</a>
-      {% if profile.socials.github %}<a href="{{ profile.socials.github }}" target="_blank" rel="noopener" class="btn-secondary">GitHub</a>{% endif %}
-      {% if profile.socials.linkedin %}<a href="{{ profile.socials.linkedin }}" target="_blank" rel="noopener" class="btn-secondary">LinkedIn</a>{% endif %}
+      {% if profile.socials.github %}<a href="{{ profile.socials.github }}" target="_blank" rel="noopener" class="btn-primary">GitHub - MariamElsoufy</a>{% endif %}
+      {% if profile.socials.linkedin %}<a href="{{ profile.socials.linkedin }}" target="_blank" rel="noopener" class="btn-primary">LinkedIn - Mariam Elsoufy</a>{% endif %}
     </div>
   </section>
 
